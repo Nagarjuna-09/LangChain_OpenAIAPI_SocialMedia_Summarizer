@@ -42,14 +42,15 @@ def lookup(name: str) -> str:
     # We supply it with 3 algorithms (name, function - function to run, description - very imp as this is needed by LLM to decide to use this or not and when to use it)
     tools_for_agent = [
         Tool(
-            name="Crawl Google for linkedin profile page",
+            name="Linkedin Crawler for url",
             func=get_profile_url_tavily,
-            description="useful for when you need get the Linkedin Page URL",
+            description="useful for when you need to get the Linkedin Page URL",
         )
     ]
 
     react_prompt = hub.pull("hwchase17/react")
 
+    # creating agent
     agent = create_react_agent(llm=llm, tools=tools_for_agent,prompt=react_prompt)
     agent_executor = AgentExecutor(agent = agent, tools=tools_for_agent, verbose=True)
 
@@ -59,6 +60,3 @@ def lookup(name: str) -> str:
 
     linked_profile_url = result["output"]
     return linked_profile_url
-
-# linkedin_url = lookup(name = "Ajith Golla")
-# print(linkedin_url)
